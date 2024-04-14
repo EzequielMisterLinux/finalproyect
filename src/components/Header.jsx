@@ -1,7 +1,15 @@
 import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import LoginForm  from './user/LogIn';
+import { Button } from './style-components/LogIng';
 const Header = () => {
+  const [loginVisible, setLoginVisible] = useState(false);
+
+  const toggleLoginForm = () => {
+    setLoginVisible(!loginVisible);
+  };
+
   return (
     <div className="navbar navbar-dark bg-dark mb-4 px-4">
       <span className="navbar-brand">
@@ -16,11 +24,14 @@ const Header = () => {
           {/* Otros enlaces */}
         </ul>
       </nav>
-      <button className="btn btn-outline-danger">
-        <i className="fa-solid fa-right-from-bracket"/>
+     <Button className="btn btn-outline-success" onClick={toggleLoginForm}>
+  
+    
         &nbsp;
-        <span> Salir </span>
-      </button>
+        <span> Log In </span>
+  
+      </Button>
+      {loginVisible && <LoginForm onClose={toggleLoginForm} />}
     </div>
   );
 };
