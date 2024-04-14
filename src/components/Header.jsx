@@ -7,7 +7,6 @@ const Header = () => {
       <span className="navbar-brand">
         <i className="fa-solid fa-calendar-days"/>
         &nbsp;
-        Proyecto-Fusalmo
       </span>
       <nav>
         <ul className="navbar-nav">
