@@ -7,6 +7,7 @@ import Dashboard from './vendor/Dashboard'; // Asumiendo que tienes un component
 import './style.css';
 
 const App = () => {
+  
   return (
     <Router>
       <div>
