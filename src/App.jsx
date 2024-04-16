@@ -6,11 +6,13 @@ import Header from './components/Header';
 import Dashboard from './vendor/Dashboard'; // Asumiendo que tienes un componente Dashboard
 import './style.css';
 
+
 const App = () => {
   return (
     <Router>
       <div>
-        <Header />
+        <Header /> 
+        {/* <Menubar/>  */}
         <Routes>
           <Route path="/" element={<Home />} /> 
           <Route path="/store" element={<StoreC />} /> 
