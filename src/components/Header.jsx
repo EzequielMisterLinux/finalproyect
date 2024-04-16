@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoginForm  from './user/LogIn';
-import { Button } from './style-components/LogIng';
+import Navbar from './Navbar';
+import Button from './Button';
+import LoginForm from './user/LogIn';
+
 const Header = () => {
   const [loginVisible, setLoginVisible] = useState(false);
 
@@ -15,6 +17,7 @@ const Header = () => {
       <span className="navbar-brand">
         <i className="fa-solid fa-calendar-days"/>
         &nbsp;
+        Proyecto-Fusalmo
       </span>
       <nav>
         <ul className="navbar-nav">
@@ -23,12 +26,9 @@ const Header = () => {
           {/* Otros enlaces */}
         </ul>
       </nav>
-     <Button className="btn btn-outline-success" onClick={toggleLoginForm}>
-  
-    
+      <Button className="btn btn-outline-success" onClick={toggleLoginForm}>
         &nbsp;
         <span> Log In </span>
-  
       </Button>
       {loginVisible && <LoginForm onClose={toggleLoginForm} />}
     </div>
