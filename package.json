@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.12",
@@ -18,9 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-=======
     "@fortawesome/fontawesome-free": "^6.5.2",
->>>>>>> 414962ba87b6a5d81f528c2fe40129887719dc8e
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "express": "^4.19.2",
