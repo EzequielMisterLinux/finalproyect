@@ -1,19 +1,22 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
+// AccountMenu.jsx
+import React, { useState, useEffect } from 'react';
+
+import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import Avatar from '@mui/material/Avatar';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import LoginForm from './user/LogIn';
+import Register from './user/Register';
 
 export default function AccountMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,24 +24,76 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [loginVisible, setLoginVisible] = useState(false);
+  const [registerVisible, setRegisterVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userAvatar, setUserAvatar] = useState('');
+
+  const toggleLoginForm = () => {
+    setLoginVisible(!loginVisible);
+    setRegisterVisible(false);
+    handleClose();
+  };
+
+  const toggleRegisterForm = () => {
+    setRegisterVisible(!registerVisible);
+    setLoginVisible(false);
+    handleClose();
+  };
+
+  const handleLogin = (avatarUrl) => {
+    setIsLoggedIn(true);
+    setLoginVisible(false);
+    setRegisterVisible(false);
+    setUserAvatar(avatarUrl);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userAvatar', avatarUrl);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserAvatar('');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userAvatar');
+  };
+
+  useEffect(() => {
+    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+    const storedUserAvatar = localStorage.getItem('userAvatar');
+    if (storedIsLoggedIn === 'true') {
+      setIsLoggedIn(true);
+      setUserAvatar(storedUserAvatar);
+    }
+  }, []);
+
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        {/* <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-        <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-          </IconButton>
-        </Tooltip>
-      </Box>
+      
+        {isLoggedIn ? (
+          <Tooltip title="Account settings">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              <Avatar src={userAvatar} alt="User Avatar" />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <>
+            <Button variant="contained" color="primary" onClick={toggleLoginForm}>
+              Login
+            </Button>
+            {/* <Button variant="contained" color="secondary" onClick={toggleRegisterForm}>
+              Register
+            </Button> */}
+          </>
+        )}
+      
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -51,12 +106,6 @@ export default function AccountMenu() {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
             '&::before': {
               content: '""',
               display: 'block',
@@ -74,32 +123,53 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        {isLoggedIn ? (
+          <>
+            <MenuItem onClick={handleClose}>
+              <Button variant="contained" color="primary">
+                Mi Perfil
+              </Button>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Button variant="contained" color="primary">
+                Mi Cuenta
+              </Button>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <PersonAdd fontSize="small" />
+              </ListItemIcon>
+              Add another account
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </>
+        ) : null}
       </Menu>
+      {loginVisible && (
+        <LoginForm
+          onClose={toggleLoginForm}
+          onLogin={handleLogin}
+          onSwitchToRegister={toggleRegisterForm}
+        />
+      )}
+      {registerVisible && (
+        <Register
+          onClose={toggleRegisterForm}
+          onSwitchToLogin={toggleLoginForm}
+        />
+      )}
     </React.Fragment>
   );
 }

@@ -1,7 +1,7 @@
-// app.js
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
+import authRoutes from './routes/authRoutes.js'; // Importa las nuevas rutas
 import connection from './database/connection.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 
@@ -20,8 +20,10 @@ app.use(function(req, res, next) {
 
 // Rutas para productos
 app.use(productRoutes);
+app.use(authRoutes); // Usa las nuevas rutas de autenticación
 app.use(dashboardRoutes);
 
+// ... (rest of the code)
 // Conexión a la base de datos
 connection.connect((err) => {
   if (err) {

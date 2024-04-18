@@ -29,7 +29,8 @@ const CartButton = styled.button`
   width: 50px;
   height: 50px;
   border: none;
-  border-radius: 15px;
+  margin: 0 20px;
+  border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
