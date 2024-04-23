@@ -99,6 +99,11 @@ const Navbar = () => {
                   <FontAwesomeIcon icon={faStore} /> Store
                 </StyledLink>
               </li>
+              <li>
+                <StyledLink to="/providers">
+                <FontAwesomeIcon icon={faTruckRampBox} /> Providers
+                </StyledLink>
+              </li>
             </ul>
           </nav>
         </NavbarLinks>
@@ -140,5 +145,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
