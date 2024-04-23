@@ -1,7 +1,7 @@
 // useProducts.js
 
 import { useState, useEffect } from 'react';
-import { fetchProducts, fetchCategories, addProductAPI, updateProductAPI, deleteProductAPI } from './api';
+import { fetchProducts, fetchCategories, updateProductAPI, deleteProductAPI } from './api';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);

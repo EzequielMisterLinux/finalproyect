@@ -7,6 +7,8 @@ import connection from './database/connection.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import { insertProduct } from './controllers/dashboardController.js';
 
+
+
 const app = express();
 const port = 3001;
 
@@ -32,7 +34,7 @@ app.use(productRoutes);
 app.use(authRoutes);
 app.use(dashboardRoutes); // Asegúrate de importar y usar las rutas de dashboard
 
-router.post('/api/products', insertProduct.insertProduct);
+router.post('/api/products', insertProduct);
 
 // Conexión a la base de datos
 connection.connect((err) => {
