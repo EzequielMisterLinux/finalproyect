@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHome, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
 
-
-
 const NavbarTheme = styled.nav`
   background-color: #dfe6e9;
   font-weight: 400;
@@ -94,8 +92,7 @@ const Navbar = () => {
           </nav>
         </NavbarLinks>
         <NavbarUtility>
-          
-          <Button>Button</Button>
+            <Button/>
           <UserProfile />
         </NavbarUtility>
       </NavbarTheme>
