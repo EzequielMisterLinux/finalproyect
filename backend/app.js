@@ -7,7 +7,35 @@ import connection from './database/connection.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import { insertProduct } from './controllers/dashboardController.js';
 
+const path = require('path');
+app.post("/api/image", upload.single('image'),(req, res, err) => {
+  if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+    res.send({ msg:'Only image files (jpg, jpeg, png) are allowed!'})};
+    
+    const image = req.file.filename;
 
+
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./");},
+  filename: function(req, file, cb){
+      const ext = file.mimetype.split("/")[1];
+      cb(null, `uploads/${file.originalname}-${Date.now()}.${ext}`)
+    }
+});
+const upload = multer ({
+  storage: storage
+})
+
+
+const cors = require('cors');
+app.use(cors({
+  origin: true,
+  methods: ["POST", "GET"],
+  credentials: true,
+}))
 
 const app = express();
 const port = 3001;

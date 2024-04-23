@@ -11,7 +11,7 @@ const Providers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5173/datos.json');
+        const response = await axios.get('./datos');
         setData(response.data.tiendas);
         setLoading(false);
       } catch (error) {

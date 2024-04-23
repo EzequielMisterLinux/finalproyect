@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCategories, fetchSubcategories, addProduct } from '../hooks/api';
+// import multer from 'multer';
+// import path from 'path';
+
+
+
+
 
 const ProductForm = () => {
   const [name, setName] = useState('');
@@ -10,6 +16,11 @@ const ProductForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [uploadStatus, setUploadStatus] = useState('');
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,14 +112,14 @@ const ProductForm = () => {
         />
       </div>
       <div className="mb-4">
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-          className="w-full p-2 border border-gray-300 rounded"
-          required
-        />
+        <input type="file" name="image" 
+        accept="image/*" 
+        multiple={false} 
+        onChange={imageHandler} />
+        <h2> {uploadStatus} </h2>
+        
+
+
       </div>
       <div className="mb-4 flex flex-col">
         <select

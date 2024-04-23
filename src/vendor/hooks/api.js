@@ -33,12 +33,18 @@ export const deleteProductAPI = async (id) => {
 };
 
 
-export const addProduct = async (formData) => {
+export const addProduct = async (formData, event) => {
   try {
+    const file = event.target.files[0];
+    const formData = new formData()
+    formData.append('image', file)
     const response = await axios.post('/products', formData, {
+      method: 'POST',
+      body: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      credentials: 'include',
     });
     // Manejar la respuesta del servidor si es necesario
     return response.data;
