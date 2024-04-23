@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import multer from 'multer'; // Importa multer para manejar la carga de archivos
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js'; // Importa las nuevas rutas
 import connection from './database/connection.js';
@@ -17,6 +18,10 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+// Configuración de multer para manejar la carga de archivos
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Rutas para productos
 app.use(productRoutes);

@@ -31,3 +31,13 @@ const App = () => {
 };
 
 export default App;
+
+          <Route path="/dashboard" element={<Dashboard />} /> {/* Nueva ruta para el dashboard */}
+        </Routes>
+        <Link to="/dashboard" className="btn btn-primary">Pasar al Dashboard</Link> {/* Botón para ir al dashboard */}
+      </div>
+    </Router>
+  );
+};
+
+export default App;
