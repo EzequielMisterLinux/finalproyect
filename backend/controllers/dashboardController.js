@@ -1,18 +1,33 @@
-// dashboardController.js
-import { createProduct, updateProduct as updateProductFromModel, removeProduct, retrieveProducts } from '../models/dashboardModel.js';
+// controllers/dashboardController.js
+import {
+  createProduct,
+  updateProduct as updateProductFromModel,
+  removeProduct,
+  retrieveProducts,
+  createSubCategory as createSubCategoryFromModel,
+  createCategory as createCategoryFromModel,
+  retrieveCategories,
+  retrieveSubCategoriesByCategory
+} from '../models/dashboardModel.js';
 
-// Insertar un producto
-const insertProduct = async (req, res) => {
-  try {
-    await createProduct(req.body);
-    res.status(201).json({ message: 'Product created successfully' });
-  } catch (error) {
-    console.error('Error inserting product:', error);
-    res.status(500).json({ error: 'Error inserting product' });
+
+const insertProduct = {
+  insertProduct: (req, res) => {
+    const { name, description, price, image, subCategoryId } = req.body;
+    createProduct.insert({ name, description, price, image, subCategoryId }, (error, results) => {
+      if (error) {
+        console.error('Error inserting product:', error);
+        res.status(500).json({ error: 'Error inserting product' });
+      } else {
+        console.log('Product inserted successfully');
+        res.status(200).json({ message: 'Product inserted successfully' });
+      }
+    });
   }
 };
 
-// Actualizar un producto
+
+
 const updateProduct = async (req, res) => {
   try {
     await updateProductFromModel(req.params.id, req.body);
@@ -22,7 +37,7 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ error: 'Error updating product' });
   }
 };
-// Eliminar un producto
+
 const deleteProduct = async (req, res) => {
   try {
     await removeProduct(req.params.id);
@@ -33,7 +48,6 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Obtener todos los productos
 const getProducts = async (req, res) => {
   try {
     const products = await retrieveProducts();
@@ -44,4 +58,54 @@ const getProducts = async (req, res) => {
   }
 };
 
-export { insertProduct, updateProduct, deleteProduct, getProducts };
+const createSubCategory = async (req, res) => {
+  try {
+    await createSubCategoryFromModel(req.body);
+    res.status(201).json({ message: 'Subcategory created successfully' });
+  } catch (error) {
+    console.error('Error creating subcategory:', error);
+    res.status(500).json({ error: 'Error creating subcategory' });
+  }
+};
+
+const createCategory = async (req, res) => {
+  try {
+    await createCategoryFromModel(req.body);
+    res.status(201).json({ message: 'Category created successfully' });
+  } catch (error) {
+    console.error('Error creating category:', error);
+    res.status(500).json({ error: 'Error creating category' });
+  }
+};
+
+const getCategories = async (req, res) => {
+  try {
+    const categories = await retrieveCategories();
+    res.json(categories);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ error: 'Error fetching categories' });
+  }
+};
+
+const getSubCategoriesByCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const subCategories = await retrieveSubCategoriesByCategory(categoryId);
+    res.json(subCategories);
+  } catch (error) {
+    console.error('Error fetching subcategories:', error);
+    res.status(500).json({ error: 'Error fetching subcategories' });
+  }
+};
+
+export {
+  insertProduct,
+  updateProduct,
+  deleteProduct,
+  getProducts,
+  createSubCategory,
+  createCategory,
+  getCategories,
+  getSubCategoriesByCategory
+};

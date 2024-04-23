@@ -1,0 +1,54 @@
+import React, { useState } from 'react';
+
+const CategoryForm = ({ addCategory, addSubcategory, categories }) => {
+  const [categoryName, setCategoryName] = useState('');
+  const [subcategoryName, setSubcategoryName] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const handleCategorySubmit = (e) => {
+    e.preventDefault();
+    if (!categoryName.trim()) {
+      console.error('Please enter a category name');
+      return;
+    }
+    addCategory(categoryName.trim());
+    setCategoryName('');
+  };
+
+  const handleSubcategorySubmit = (e) => {
+    e.preventDefault();
+    if (!subcategoryName.trim() || !selectedCategory) {
+      console.error('Please enter a subcategory name and select a category');
+      return;
+    }
+    addSubcategory(subcategoryName.trim(), selectedCategory);
+    setSubcategoryName('');
+  };
+
+  return (
+    <div className="mt-8 w-2">
+      <form onSubmit={handleCategorySubmit} className="mb-4">
+        <div className="flex items-center mb-2">
+          <input type="text" placeholder="Category Name" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} className="mr-2 p-2 border border-gray-300 rounded flex-grow" />
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded">Add</button>
+        </div>
+      </form>
+      <form onSubmit={handleSubcategorySubmit} className="mb-4">
+        <div className="flex items-center mb-2">
+          <input type="text" placeholder="Subcategory Name" value={subcategoryName} onChange={(e) => setSubcategoryName(e.target.value)} className="mr-2 p-2 border border-gray-300 rounded flex-grow" />
+        </div>
+        <div className="flex items-center mb-2">
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="p-2 border border-gray-300 rounded mr-2">
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>{category.name}</option>
+            ))}
+          </select>
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded">Add</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default CategoryForm;

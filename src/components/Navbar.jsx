@@ -4,8 +4,9 @@ import Button from './Button';
 import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faHome, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
-
+import { faBars, faHome, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+import CategoryModal from './CategoryModal';
+import { useState } from "react";
 
 
 const NavbarTheme = styled.nav`
@@ -73,6 +74,14 @@ const MobileMenuItem = styled.div`
 
 
 const Navbar = () => {
+  const [showCategoriesMobile, setShowCategoriesMobile] = useState(false);
+
+
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+
+  const handleCategoryModalToggle = () => {
+    setIsCategoryModalOpen(!isCategoryModalOpen);
+  };
   return (
     <>
       <NavbarTheme>
@@ -99,6 +108,11 @@ const Navbar = () => {
           <UserProfile />
         </NavbarUtility>
       </NavbarTheme>
+      {showCategoriesMobile && <CategoryModal onClose={() => setShowCategoriesMobile(false)} />}
+
+      {isCategoryModalOpen && (
+        <CategoryModal onClose={handleCategoryModalToggle} />
+      )}
       <MobileMenu>
         <div className="flex justify-between">
           <MobileMenuItem>
@@ -111,16 +125,14 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faStore} />
             </StyledLink>
           </MobileMenuItem>
+
           <MobileMenuItem>
-            <StyledLink to="/profile">
-              <FontAwesomeIcon icon={faUser} />
+            <StyledLink to="#" onClick={handleCategoryModalToggle}>
+            <FontAwesomeIcon icon={faBars} onClick={handleCategoryModalToggle} />
             </StyledLink>
           </MobileMenuItem>
-          <MobileMenuItem>
-            <StyledLink to="/cart">
-              <FontAwesomeIcon icon={faShoppingCart} />
-            </StyledLink>
-          </MobileMenuItem>
+
+
         </div>
       </MobileMenu>
     </>
