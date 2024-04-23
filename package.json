@@ -27,6 +27,8 @@
     "fs-extra": "^11.2.0",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "nodemon": "^3.1.0",
+    "path": "^0.12.7",
     "primereact": "^10.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,6 +37,7 @@
     "react-responsive": "^10.0.0",
     "react-router-dom": "^6.22.3",
     "styled-components": "^6.1.8",
+    "sweetalert2": "^11.10.8",
     "tw-elements": "^2.0.0",
     "tw-elements-react": "^1.0.0-alpha2",
     "twin.macro": "^3.4.1"

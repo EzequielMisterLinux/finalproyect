@@ -11,7 +11,7 @@ const Providers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/datos.json');
+        const response = await axios.get('http://localhost:5173/datos.json');
         setData(response.data.tiendas);
         setLoading(false);
       } catch (error) {
@@ -58,8 +58,8 @@ const Providers = () => {
                 </div>
               </div>
             ))}
-            <BackToTopButton />
           </div>
+          <BackToTopButton />
         </div>
       </section>
     </>

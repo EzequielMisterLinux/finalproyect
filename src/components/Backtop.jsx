@@ -12,12 +12,11 @@ const ButtonContainer = styled.span`
   z-index: 1000;
   cursor: pointer;
   animation: fadeIn 0.3s;
-  opacity: 0.5;
+  opacity: ${({ isScrollButtonVisible }) => (isScrollButtonVisible ? '0.5' : '0')};
   background: #3b3b98;
   border-radius: 4px;
   transition: opacity 0.4s, color ease-in-out 0.2s, background ease-in-out 0.2s;
-  display: ${({ isScrollButtonVisible }) =>
-    isScrollButtonVisible ? 'flex' : 'none'};
+  display: flex;
 
   &:hover {
     opacity: 1;

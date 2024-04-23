@@ -4,7 +4,7 @@ import Button from './Button';
 import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faHome, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faHome, faStore, faTruckRampBox } from "@fortawesome/free-solid-svg-icons";
 import CategoryModal from './CategoryModal';
 import { useState } from "react";
 

@@ -1,11 +1,21 @@
 // models/dashboardModel.js
+import { resolve } from 'path';
 import connection from '../database/connection.js';
+import { rejects } from 'assert';
+
+
 
 const createProduct = {
-  insert: (data, callback) => {
-    const { name, description, price, image, subCategoryId } = data;
-    const query = 'INSERT INTO Products (name, description, price, image, subCategoryId) VALUES (?, ?, ?, ?, ?)';
-    connection.query(query, [name, description, price, image, subCategoryId], callback);
+  insert: (name, description, price, image, subCategoryId) => {
+    return new Promise((resolve, reject) => {
+      connection.query('CALL InsertProduct(?,?,?,?,?)',[name, description, price, image, subCategoryId],(error, results) =>{
+        if (error){
+          reject(error);
+        } else {
+          resolve(results[0].result);
+        }
+      })
+    })
   }
 };
 

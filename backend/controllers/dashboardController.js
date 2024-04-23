@@ -11,22 +11,17 @@ import {
 } from '../models/dashboardModel.js';
 
 
-const insertProduct = {
-  insertProduct: (req, res) => {
-    const { name, description, price, image, subCategoryId } = req.body;
-    createProduct.insert({ name, description, price, image, subCategoryId }, (error, results) => {
-      if (error) {
-        console.error('Error inserting product:', error);
-        res.status(500).json({ error: 'Error inserting product' });
-      } else {
-        console.log('Product inserted successfully');
-        res.status(200).json({ message: 'Product inserted successfully' });
-      }
-    });
+
+
+const insertProduct = async (req, res) => {
+  try {
+    await createProduct(req.params.id, req.body);
+    res.json({message: 'product insert successfully'});
+  } catch (error) {
+    console.error('Error insert Product:', error);
+    res.status(500).json({error: 'Error to insert product'});
   }
-};
-
-
+}
 
 const updateProduct = async (req, res) => {
   try {

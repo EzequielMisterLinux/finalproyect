@@ -23,10 +23,6 @@ export const fetchSubcategories = async (categoryId) => {
   return response.data;
 };
 
-export const addProductAPI = async (productData) => {
-  const response = await api.post('/products', productData);
-  return response.data;
-};
 
 export const updateProductAPI = async (id, updatedProduct) => {
   await api.put(`/products/${id}`, updatedProduct);
@@ -34,4 +30,20 @@ export const updateProductAPI = async (id, updatedProduct) => {
 
 export const deleteProductAPI = async (id) => {
   await api.delete(`/products/${id}`);
+};
+
+
+export const addProduct = async (formData) => {
+  try {
+    const response = await axios.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    // Manejar la respuesta del servidor si es necesario
+    return response.data;
+  } catch (error) {
+    // Manejar el error si ocurre
+    throw error;
+  }
 };

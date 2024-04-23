@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const CategoryForm = ({ addCategory, addSubcategory, categories }) => {
   const [categoryName, setCategoryName] = useState('');
   const [subcategoryName, setSubcategoryName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  const handleCategorySubmit = (e) => {
+  const handleCategorySubmit = async (e) => {
     e.preventDefault();
     if (!categoryName.trim()) {
       console.error('Please enter a category name');
       return;
     }
-    addCategory(categoryName.trim());
-    setCategoryName('');
+    try {
+      const response = await axios.post('http://localhost:3001/api/categories', { name: categoryName.trim() });
+      addCategory(response.data);
+      setCategoryName('');
+    } catch (error) {
+      console.error('Error adding category:', error);
+    }
   };
 
-  const handleSubcategorySubmit = (e) => {
+  const handleSubcategorySubmit = async (e) => {
     e.preventDefault();
     if (!subcategoryName.trim() || !selectedCategory) {
       console.error('Please enter a subcategory name and select a category');
       return;
     }
-    addSubcategory(subcategoryName.trim(), selectedCategory);
-    setSubcategoryName('');
+    try {
+      const response = await axios.post(`http://localhost:3001/api/categories/${selectedCategory}/subcategories`, { name: subcategoryName.trim() });
+      addSubcategory(response.data, selectedCategory);
+      setSubcategoryName('');
+    } catch (error) {
+      console.error('Error adding subcategory:', error);
+    }
   };
 
   return (

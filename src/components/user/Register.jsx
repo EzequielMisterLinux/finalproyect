@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 const RegisterForm = ({ onClose, onSwitchToLogin }) => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,14 @@ const RegisterForm = ({ onClose, onSwitchToLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !username || !fullName || !address || !password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos vacíos',
+        text: 'Por favor, llene todos los campos.'
+      });
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:3001/register', {
         email,
@@ -22,8 +31,26 @@ const RegisterForm = ({ onClose, onSwitchToLogin }) => {
         password
       });
       console.log(response.data);
+      if (response.data.message === 'Registro exitoso') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: response.data.message
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en el registro',
+          text: response.data.message
+        });
+      }
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: error.response.data.error || 'Hubo un problema al registrar el usuario'
+      });
     }
   };
 

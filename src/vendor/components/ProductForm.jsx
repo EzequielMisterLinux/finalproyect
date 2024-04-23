@@ -1,9 +1,7 @@
-// ProductForm.jsx
-
 import React, { useState, useEffect } from 'react';
-import { fetchCategories, fetchSubcategories } from '../hooks/api';
+import { fetchCategories, fetchSubcategories, addProduct } from '../hooks/api';
 
-const ProductForm = ({ addProduct }) => {
+const ProductForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -47,14 +45,14 @@ const ProductForm = ({ addProduct }) => {
       console.error('Please fill in all required fields');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('name', name.trim());
     formData.append('description', description.trim());
     formData.append('price', parseFloat(price));
     formData.append('image', image);
     formData.append('subCategoryId', parseInt(selectedSubCategory));
-  
+
     try {
       await addProduct(formData);
       resetForm();
@@ -62,15 +60,15 @@ const ProductForm = ({ addProduct }) => {
       console.error('Error adding product:', error);
     }
   };
+
   const resetForm = () => {
     setName('');
     setDescription('');
     setPrice('');
-    setImage('');
+    setImage(null);
     setSelectedCategory('');
     setSelectedSubCategory('');
   };
-
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md  p-4 bg-white shadow-md rounded">
@@ -81,6 +79,7 @@ const ProductForm = ({ addProduct }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
       </div>
       <div className="mb-4">
@@ -98,6 +97,7 @@ const ProductForm = ({ addProduct }) => {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
       </div>
       <div className="mb-4">
@@ -107,6 +107,7 @@ const ProductForm = ({ addProduct }) => {
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
       </div>
       <div className="mb-4 flex flex-col">
@@ -117,6 +118,7 @@ const ProductForm = ({ addProduct }) => {
             setSelectedSubCategory('');
           }}
           className="p-2 border border-gray-300 rounded mb-2"
+          required
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
@@ -129,6 +131,7 @@ const ProductForm = ({ addProduct }) => {
           value={selectedSubCategory}
           onChange={(e) => setSelectedSubCategory(e.target.value)}
           className="p-2 border border-gray-300 rounded"
+          required
         >
           <option value="">Select Subcategory</option>
           {subcategories.map((subcategory) => (

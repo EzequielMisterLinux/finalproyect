@@ -12,7 +12,7 @@ const Productos = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/datos.json');
+        const response = await axios.get('http://localhost:5173/datos.json');
         const tiendas = response.data.tiendas;
         const store = tiendas.find(store => store.id === parseInt(storeId));
         if (store) {
