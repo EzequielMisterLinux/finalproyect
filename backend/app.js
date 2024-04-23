@@ -1,29 +1,39 @@
 import express from 'express';
 import cors from 'cors';
+import multer from 'multer';
 import productRoutes from './routes/productRoutes.js';
-import authRoutes from './routes/authRoutes.js'; // Importa las nuevas rutas
+import authRoutes from './routes/authRoutes.js';
 import connection from './database/connection.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import { insertProduct } from './controllers/dashboardController.js';
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Agrega esta línea para manejar los datos del formulario
 
 // Middleware para permitir solicitudes CORS
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173"); 
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
-// Rutas para productos
+// Configuración de multer para manejar la carga de archivos
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const router = express.Router();
+
+
+// Rutas
 app.use(productRoutes);
-app.use(authRoutes); // Usa las nuevas rutas de autenticación
-app.use(dashboardRoutes);
+app.use(authRoutes);
+app.use(dashboardRoutes); // Asegúrate de importar y usar las rutas de dashboard
 
-// ... (rest of the code)
+router.post('/api/products', insertProduct.insertProduct);
+
 // Conexión a la base de datos
 connection.connect((err) => {
   if (err) {

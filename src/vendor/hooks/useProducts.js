@@ -1,16 +1,21 @@
+// useProducts.js
+
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchProducts, fetchCategories, addProductAPI, updateProductAPI, deleteProductAPI } from './api';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/products');
-        setProducts(response.data);
+        const productsData = await fetchProducts();
+        const categoriesData = await fetchCategories();
+        setProducts(productsData);
+        setCategories(categoriesData);
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -18,13 +23,13 @@ const useProducts = () => {
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const addProduct = async (product) => {
+  const addProduct = async (productData) => {
     try {
-      await axios.post('http://localhost:3001/api/products', product);
-      setProducts((prevProducts) => [...prevProducts, product]);
+      const newProduct = await addProductAPI(productData);
+      setProducts((prevProducts) => [...prevProducts, newProduct]);
     } catch (err) {
       setError(err);
     }
@@ -32,9 +37,9 @@ const useProducts = () => {
 
   const updateProduct = async (id, updatedProduct) => {
     try {
-      await axios.put(`http://localhost:3001/api/products/${id}`, updatedProduct);
+      await updateProductAPI(id, updatedProduct);
       setProducts((prevProducts) =>
-        prevProducts.map((product) => (product.id === id ? updatedProduct : product))
+        prevProducts.map((product) => (product.id === id ? { ...product, ...updatedProduct } : product))
       );
     } catch (err) {
       setError(err);
@@ -43,14 +48,14 @@ const useProducts = () => {
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/api/products/${id}`);
+      await deleteProductAPI(id);
       setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
     } catch (err) {
       setError(err);
     }
   };
 
-  return { products, loading, error, addProduct, updateProduct, deleteProduct };
+  return { products, categories, loading, error, addProduct, updateProduct, deleteProduct };
 };
 
 export default useProducts;

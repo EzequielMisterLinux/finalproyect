@@ -3,30 +3,40 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
-const LoginForm = ({ onClose, onSwitchToRegister, onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:3001/authenticate', { email, password });
+  const LoginForm = ({ onClose, onSwitchToRegister, onLogin }) => {
+    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-      if (response.data.user) {
-        // Handle successful login
-        console.log('Login successful:', response.data.user);
-        onLogin(response.data.user.avatarUrl); // Pass the avatarUrl to the onLogin handler
-      } else {
-        setError(response.data.error || 'Invalid credentials');
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await axios.post('http://localhost:3001/authenticate', { email, password });
+  
+        if (response.data.message === 'Usuario autenticado correctamente.') {
+          // Manejar el inicio de sesión exitoso
+          console.log('Inicio de sesión exitoso:', response.data.message);
+          onLogin(response.data.userId); // Pasar el userId al padre
+          // También puedes manejar cualquier acción adicional, como cargar la página de inicio, etc.
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en la autenticación',
+            text: response.data.message
+          });
+        }
+      } catch (error) {
+        setError('Ocurrió un error durante el inicio de sesión');
+        console.error(error);
       }
-    } catch (error) {
-      setError('An error occurred during login');
-      console.error(error);
-    }
-  };
+    };
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">

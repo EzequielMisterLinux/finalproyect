@@ -3,8 +3,7 @@ import connection from '../database/connection.js';
 
 const getProducts = () => {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT id, name, price, image FROM products';
-    connection.query(query, (error, results, fields) => {
+    connection.query('SELECT * FROM Products', (error, results) => {
       if (error) {
         reject(error);
         return;
@@ -13,5 +12,8 @@ const getProducts = () => {
     });
   });
 };
+
+
+
 
 export { getProducts };

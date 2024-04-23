@@ -1,23 +1,28 @@
-// dashboardModel.js
+// models/dashboardModel.js
+import { resolve } from 'path';
 import connection from '../database/connection.js';
+import { rejects } from 'assert';
 
-// Crear un producto
-const createProduct = (product) => {
-  return new Promise((resolve, reject) => {
-    connection.query('INSERT INTO products SET ?', product, (error, results) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve(results);
-    });
-  });
+
+
+const createProduct = {
+  insert: (name, description, price, image, subCategoryId) => {
+    return new Promise((resolve, reject) => {
+      connection.query('CALL InsertProduct(?,?,?,?,?)',[name, description, price, image, subCategoryId],(error, results) =>{
+        if (error){
+          reject(error);
+        } else {
+          resolve(results[0].result);
+        }
+      })
+    })
+  }
 };
 
-// Actualizar un producto
+
 const updateProduct = (id, product) => {
   return new Promise((resolve, reject) => {
-    connection.query('UPDATE products SET ? WHERE id = ?', [product, id], (error, results) => {
+    connection.query('UPDATE Products SET ? WHERE id = ?', [product, id], (error, results) => {
       if (error) {
         reject(error);
         return;
@@ -27,10 +32,9 @@ const updateProduct = (id, product) => {
   });
 };
 
-// Eliminar un producto
 const removeProduct = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query('DELETE FROM products WHERE id = ?', id, (error, results) => {
+    connection.query('DELETE FROM Products WHERE id = ?', id, (error, results) => {
       if (error) {
         reject(error);
         return;
@@ -40,10 +44,9 @@ const removeProduct = (id) => {
   });
 };
 
-// Obtener todos los productos
 const retrieveProducts = () => {
   return new Promise((resolve, reject) => {
-    connection.query('SELECT * FROM products', (error, results) => {
+    connection.query('SELECT * FROM Products', (error, results) => {
       if (error) {
         reject(error);
         return;
@@ -53,4 +56,61 @@ const retrieveProducts = () => {
   });
 };
 
-export { createProduct, updateProduct, removeProduct, retrieveProducts };
+const createSubCategory = (subCategory) => {
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO SubCategories SET ?', subCategory, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
+const createCategory = (category) => {
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO Categories SET ?', category, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
+const retrieveCategories = () => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM Categories', (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
+const retrieveSubCategoriesByCategory = (categoryId) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM SubCategories WHERE categoryId = ?', categoryId, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+};
+
+export {
+  createProduct,
+  updateProduct,
+  removeProduct,
+  retrieveProducts,
+  createSubCategory,
+  createCategory,
+  retrieveCategories,
+  retrieveSubCategoriesByCategory
+};
