@@ -4,9 +4,12 @@ import Button from './Button';
 import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faHome, faStore, faTruckRampBox } from "@fortawesome/free-solid-svg-icons";
+
+import { faShoppingCart, faHome, faTruckRampBox,faBars,  faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+
 import CategoryModal from './CategoryModal';
 import { useState } from "react";
+
 
 
 const NavbarTheme = styled.nav`
@@ -108,8 +111,7 @@ const Navbar = () => {
           </nav>
         </NavbarLinks>
         <NavbarUtility>
-          
-          <Button>Button</Button>
+            <Button/>
           <UserProfile />
         </NavbarUtility>
       </NavbarTheme>
