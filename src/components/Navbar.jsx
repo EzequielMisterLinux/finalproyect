@@ -4,7 +4,7 @@ import Button from './Button';
 import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faHome, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faHome, faStore, faUser, faTruckRampBox } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -69,9 +69,6 @@ const MobileMenuItem = styled.div`
   flex: 1;
 `;
 
-
-
-
 const Navbar = () => {
   return (
     <>
@@ -88,6 +85,11 @@ const Navbar = () => {
               <li>
                 <StyledLink to="/store">
                   <FontAwesomeIcon icon={faStore} /> Store
+                </StyledLink>
+              </li>
+              <li>
+                <StyledLink to="/providers">
+                <FontAwesomeIcon icon={faTruckRampBox} /> Providers
                 </StyledLink>
               </li>
             </ul>
