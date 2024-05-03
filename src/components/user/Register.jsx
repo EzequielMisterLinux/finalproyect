@@ -11,6 +11,7 @@ const RegisterForm = ({ onClose, onSwitchToLogin }) => {
   const [fullName, setFullName] = useState('');
   const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('cliente');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,8 @@ const RegisterForm = ({ onClose, onSwitchToLogin }) => {
         username,
         fullName,
         address,
-        password
+        password,
+        role // Enviamos el rol al backend
       });
       console.log(response.data);
       if (response.data.message === 'Registro exitoso') {
@@ -126,6 +128,20 @@ const RegisterForm = ({ onClose, onSwitchToLogin }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="role" className="block text-gray-700 font-bold mb-2">
+                Tipo de usuario
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="cliente">cliente</option>
+                <option value="vendedor">vendedor</option>
+              </select>
             </div>
             <div className="flex items-center justify-between">
               <button

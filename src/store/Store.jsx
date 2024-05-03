@@ -4,10 +4,9 @@ import '../index.css';
 import SearchFilter from '../components/SearchFilter';
 import styled from 'styled-components';
 import CategoryModal from '../components/CategoryModal';
-import { Link } from 'react-router-dom';
+import { Link, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faStore, faBars } from '@fortawesome/free-solid-svg-icons';
-
 
 const MobileMenu = styled.nav`
   display: none;
@@ -115,9 +114,15 @@ const Store = () => {
           ) : (
             filteredProducts.map((product) => (
               <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                
+              <img
+                src={`http://localhost:3001/uploads/image-1713937358265.jpg`}
+                alt={product.name}
+                className="w-full h-48 object-cover"
+              />
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-2">{product.name}</h2>
+                  
                   <p className="text-gray-700 mb-4">${product.price}</p>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Agregar al Carrito

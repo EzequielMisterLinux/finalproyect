@@ -14,6 +14,16 @@ const getProducts = () => {
 };
 
 
+const getProductImageById = (productId) => {
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT image FROM Products WHERE id = ?', [productId], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results[0] ? results[0].image : null);
+    });
+  });
+};
 
-
-export { getProducts };
+export { getProducts, getProductImageById };

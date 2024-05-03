@@ -1,11 +1,11 @@
 // api.js
-
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/api';
 
 const api = axios.create({
   baseURL,
+  withCredentials: true, // Agrega esta línea para enviar cookies con las solicitudes
 });
 
 export const fetchProducts = async () => {
@@ -23,7 +23,6 @@ export const fetchSubcategories = async (categoryId) => {
   return response.data;
 };
 
-
 export const updateProductAPI = async (id, updatedProduct) => {
   await api.put(`/products/${id}`, updatedProduct);
 };
@@ -32,24 +31,33 @@ export const deleteProductAPI = async (id) => {
   await api.delete(`/products/${id}`);
 };
 
-
-export const addProduct = async (formData, event) => {
+export const createCategory = async (categoryData) => {
   try {
-    const file = event.target.files[0];
-    const formData = new formData()
-    formData.append('image', file)
-    const response = await axios.post('/products', formData, {
-      method: 'POST',
-      body: formData,
+    const response = await api.post('/categories', categoryData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createSubcategory = async (categoryId, subcategoryData) => {
+  try {
+    const response = await api.post(`/categories/${categoryId}/subcategories`, subcategoryData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addProduct = async (formData) => {
+  try {
+    const response = await api.post('/products', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      credentials: 'include',
     });
-    // Manejar la respuesta del servidor si es necesario
     return response.data;
   } catch (error) {
-    // Manejar el error si ocurre
     throw error;
   }
 };

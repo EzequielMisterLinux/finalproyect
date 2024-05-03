@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCategories, fetchSubcategories, addProduct } from '../hooks/api';
-// import multer from 'multer';
-// import path from 'path';
-
-
-
-
 
 const ProductForm = () => {
   const [name, setName] = useState('');
@@ -17,10 +11,6 @@ const ProductForm = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
-
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,19 +46,33 @@ const ProductForm = () => {
       console.error('Please fill in all required fields');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('name', name.trim());
     formData.append('description', description.trim());
     formData.append('price', parseFloat(price));
     formData.append('image', image);
     formData.append('subCategoryId', parseInt(selectedSubCategory));
-
+  
     try {
-      await addProduct(formData);
+      const response = await addProduct(formData); // Obtiene la respuesta de la API
       resetForm();
+      setUploadStatus('Product added successfully!');
+      // Realiza cualquier otra acción necesaria con la respuesta
     } catch (error) {
       console.error('Error adding product:', error);
+      setUploadStatus('Error adding product');
+    }
+  };
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      setUploadStatus(`Selected image: ${file.name}`);
+    } else {
+      setImage(null);
+      setUploadStatus('Please select a valid image file');
     }
   };
 
@@ -79,10 +83,11 @@ const ProductForm = () => {
     setImage(null);
     setSelectedCategory('');
     setSelectedSubCategory('');
+    setUploadStatus('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md  p-4 bg-white shadow-md rounded">
+    <form onSubmit={handleSubmit} className="max-w-md p-4 bg-white shadow-md rounded">
       <div className="mb-4">
         <input
           type="text"
@@ -112,14 +117,14 @@ const ProductForm = () => {
         />
       </div>
       <div className="mb-4">
-        <input type="file" name="image" 
-        accept="image/*" 
-        multiple={false} 
-        onChange={imageHandler} />
-        <h2> {uploadStatus} </h2>
-        
-
-
+        <input
+          type="file"
+          name="image"
+          accept="image/jpeg,image/png,image/gif"
+          multiple={false}
+          onChange={imageHandler}
+        />
+        <h2>{uploadStatus}</h2>
       </div>
       <div className="mb-4 flex flex-col">
         <select
@@ -153,7 +158,10 @@ const ProductForm = () => {
         </select>
       </div>
 
-      <button type="submit" className="bg-green-500 hover:bg-green-600 text-white p-2 rounded w-full">
+      <button
+        type="submit"
+        className="bg-green-500 hover:bg-green-600 text-white p-2 rounded w-full"
+      >
         Add Product
       </button>
     </form>

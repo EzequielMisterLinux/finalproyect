@@ -11,7 +11,7 @@ const Providers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('./datos');
+        const response = await axios.get('/datos.json');
         setData(response.data.tiendas);
         setLoading(false);
       } catch (error) {
@@ -41,8 +41,8 @@ const Providers = () => {
         <div className="container">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {Array.isArray(data) && data.map(store => (
-              <div key={store.id} className="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3">
-                <img src="https://i.ibb.co/r2zns1m/image-01.jpg" alt="" className="w-full" />
+              <div key={store.id} className="mb-10 overflow-hidden rounded-lg bg-white shadow-lg shadow-3 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3">
+                <img src={store.imagen} alt="" className="w-full h-64 object-cover" />
                 <div className="p-8 text-center sm:p-9 md:p-7 xl:p-9">
                   <h3 className="font-extrabold md:text-4xl lg:text-2xl text-blue-500 dark:text-blue-500">
                     {store.nombre}
@@ -51,15 +51,15 @@ const Providers = () => {
                     {store.descripción}
                   </p>
                   <Link to={`/productos/${store.id}`}>
-                    <button className="inline-block rounded-full border border-gray-3 px-7 py-2 text-base font-medium text-body-color transition hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-dark-6">
+                    <button className="inline-block rounded-full border border-gray-3 bg-stone-200 px-7 py-2 text-base font-medium text-body-color transition hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-dark-6">
                       Ver productos
                     </button>
                   </Link>
                 </div>
               </div>
             ))}
+            <BackToTopButton />
           </div>
-          <BackToTopButton />
         </div>
       </section>
     </>

@@ -1,7 +1,6 @@
 // useProducts.js
-
 import { useState, useEffect } from 'react';
-import { fetchProducts, fetchCategories, updateProductAPI, deleteProductAPI } from './api';
+import { fetchProducts, fetchCategories, updateProductAPI, createCategory, createSubcategory , deleteProductAPI, addProduct } from './api';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
@@ -26,10 +25,27 @@ const useProducts = () => {
     fetchData();
   }, []);
 
-  const addProduct = async (productData) => {
+  const addNewProduct = async (productData) => {
     try {
-      const newProduct = await addProductAPI(productData);
+      const newProduct = await addProduct(productData);
       setProducts((prevProducts) => [...prevProducts, newProduct]);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+
+
+  const addNewSubcategory = async (categoryId, subcategoryData) => {
+    try {
+      const newSubcategory = await createSubcategory(categoryId, subcategoryData);
+      setCategories((prevCategories) =>
+        prevCategories.map((category) =>
+          category.id === categoryId
+            ? { ...category, subcategories: [...(category.subcategories || []), newSubcategory] }
+            : category
+        )
+      );
     } catch (err) {
       setError(err);
     }
@@ -39,7 +55,9 @@ const useProducts = () => {
     try {
       await updateProductAPI(id, updatedProduct);
       setProducts((prevProducts) =>
-        prevProducts.map((product) => (product.id === id ? { ...product, ...updatedProduct } : product))
+        prevProducts.map((product) =>
+          product.id === id ? { ...product, ...updatedProduct } : product
+        )
       );
     } catch (err) {
       setError(err);
@@ -54,8 +72,20 @@ const useProducts = () => {
       setError(err);
     }
   };
+   const addProduct = async (formData) => {
+    try {
+      const response = await api.post('/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data; // Retorna los datos de la respuesta
+    } catch (error) {
+      throw error; // Lanza el error para que sea manejado en el componente
+    }
+  };
 
-  return { products, categories, loading, error, addProduct, updateProduct, deleteProduct };
+  return { products, categories, loading, error, addNewProduct, updateProduct, deleteProduct, addProduct, addNewSubcategory };
 };
 
 export default useProducts;

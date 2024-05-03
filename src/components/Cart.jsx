@@ -53,30 +53,37 @@ export function Cart() {
                         ))
                     }
                 </ul>
-                <table className="">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Unit Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="https://cdn.dummyjson.com/product-images/1/thumbnail.jpg" alt="" /></td>
-                            <td>Iphone 9</td>
-                            <td><input type="number" value={2}/></td>
-                            <td>549</td>
-                        </tr>
-                        <tr>
-                            <td><img src="https://cdn.dummyjson.com/product-images/2/thumbnail.jpg" alt="" /></td>
-                            <td>iPhone X</td>
-                            <td><input type="number" value={1}/></td>
-                            <td>899</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="overflow-auto rounded-lg shadow">
+                    <table className="w-full">
+                        <thead className="bg-gray-50 border-b-2 border-gray-200">
+                            <tr>
+                                <th className="p-3 text-sm font-semibold tracking-wide text-left">Image</th>
+                                <th className="p-3 text-sm font-semibold tracking-wide text-left">Product Name</th>
+                                <th className="p-3 text-sm font-semibold tracking-wide text-left">Quantity</th>
+                                <th className="p-3 text-sm font-semibold tracking-wide text-left">Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            <tr className="bg-white">
+                                <td className="p-3 text-sm text-gray-700 whitespace-nowrap"><img src="https://cdn.dummyjson.com/product-images/1/thumbnail.jpg" alt="" /></td>
+                                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                                    <span className="p-1.5 text-xs font-medium uppercase tracking-wider">Iphone 9</span>
+                                </td>
+                                <td className="p-3 text-sm text-gray-700 whitespace-nowrap"><input type="number" value={2}/></td>
+                                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">549</td>
+                            </tr>
+                            <tr className="bg-white">
+                                <td className="p-3 text-sm text-gray-700"><img src="https://cdn.dummyjson.com/product-images/2/thumbnail.jpg" alt="" /></td>
+                                <td className="p-3 text-sm text-gray-700">
+                                    <span className="p-1.5 text-xs font-medium uppercase tracking-wider">Iphone X</span>
+                                </td>
+                                <td className="p-3 text-sm text-gray-700"><input type="number" value={1}/></td>
+                                <td className="p-3 text-sm text-gray-700">899</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 
                 <div className="totales">
                     <p>Productos: {cantProductos}</p>

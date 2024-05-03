@@ -1,27 +1,23 @@
 // models/dashboardModel.js
-import { resolve } from 'path';
 import connection from '../database/connection.js';
-import { rejects } from 'assert';
-
-
 
 const createProduct = {
   insert: (name, description, price, image, subCategoryId) => {
-    if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-      res.send({ msg:'Only image files (jpg, jpeg, png) are allowed!'})};
-      
     return new Promise((resolve, reject) => {
-      connection.query('CALL InsertProduct(?,?,?,?,?)',[name, description, price, image, subCategoryId],(error, results) =>{
-        if (error){
-          reject(error);
-        } else {
-          resolve(results[0].result);
+      connection.query(
+        'INSERT INTO Products (name, description, price, image, subCategoryId) VALUES (?, ?, ?, ?, ?)',
+        [name, description, price, image, subCategoryId],
+        (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results.affectedRows > 0);
+          }
         }
-      })
-    })
+      );
+    });
   }
 };
-
 
 const updateProduct = (id, product) => {
   return new Promise((resolve, reject) => {

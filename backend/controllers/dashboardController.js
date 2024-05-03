@@ -1,4 +1,6 @@
 // controllers/dashboardController.js
+import path from 'path';
+import fs from 'fs'; 
 import {
   createProduct,
   updateProduct as updateProductFromModel,
@@ -9,19 +11,47 @@ import {
   retrieveCategories,
   retrieveSubCategoriesByCategory
 } from '../models/dashboardModel.js';
+import multer from 'multer';
 
-
-
-
-const insertProduct = async (req, res) => {
-  try {
-    await createProduct(req.params.id, req.body);
-    res.json({message: 'product insert successfully'});
-  } catch (error) {
-    console.error('Error insert Product:', error);
-    res.status(500).json({error: 'Error to insert product'});
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = 'uploads/'; 
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `image-${Date.now()}${ext}`);
   }
-}
+});
+
+const upload = multer({ storage });
+
+const insertProduct = [
+  upload.single('image'),
+  async (req, res) => {
+    try {
+      const { name, description, price, subCategoryId } = req.body;
+      const image = req.file ? req.file.path : null;
+
+      if (!req.file || !req.file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return res.status(400).json({ error: 'Only image files (jpg, jpeg, png, gif) are allowed' });
+      }
+
+      const result = await createProduct.insert(name, description, price, image, subCategoryId);
+      if (result) {
+        res.json({ message: 'Product inserted successfully' });
+      } else {
+        res.status(500).json({ error: 'Error inserting product' });
+      }
+    } catch (error) {
+      console.error('Error inserting product:', error);
+      res.status(500).json({ error: 'Error inserting product' });
+    }
+  }
+];
 
 const updateProduct = async (req, res) => {
   try {
