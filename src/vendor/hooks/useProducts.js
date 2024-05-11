@@ -1,6 +1,7 @@
 // useProducts.js
 import { useState, useEffect } from 'react';
-import { fetchProducts, fetchCategories, updateProductAPI, createCategory, createSubcategory , deleteProductAPI, addProduct } from './api';
+import { fetchProducts, fetchCategories, updateProductAPI, 
+createCategory, createSubcategory , deleteProductAPI } from './api';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
@@ -34,6 +35,14 @@ const useProducts = () => {
     }
   };
 
+  const addNewCategory = async (categoryName) => {
+    try {
+      const newCategory = await createCategory({ name: categoryName });
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+    } catch (err) {
+      setError(err);
+    }
+  };
 
 
   const addNewSubcategory = async (categoryId, subcategoryData) => {
@@ -72,20 +81,15 @@ const useProducts = () => {
       setError(err);
     }
   };
-   const addProduct = async (formData) => {
+  const addProduct = async (productData) => {
     try {
-      const response = await api.post('/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data; // Retorna los datos de la respuesta
-    } catch (error) {
-      throw error; // Lanza el error para que sea manejado en el componente
+      const newProduct = await api.post('/products', productData);
+      setProducts((prevProducts) => [...prevProducts, newProduct.data]);
+    } catch (err) {
+      setError(err);
     }
   };
-
-  return { products, categories, loading, error, addNewProduct, updateProduct, deleteProduct, addProduct, addNewSubcategory };
+  return { products, categories, loading, error, addNewProduct, updateProduct, deleteProduct, addProduct, addNewSubcategory, addNewCategory };
 };
 
 export default useProducts;

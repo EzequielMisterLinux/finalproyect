@@ -6,7 +6,7 @@ import useProducts from './hooks/useProducts';
 import CategoryForm from './components/CategoryForm';
 
 const Dashboard = () => {
-  const { products, categories, loading, error, addProduct, updateProduct, deleteProduct, addCategory, addSubcategory } = useProducts();
+  const { products, categories, loading, error, addProduct, updateProduct, deleteProduct, addNewCategory, addSubcategory } = useProducts();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -18,7 +18,7 @@ const Dashboard = () => {
         <div className="md:w-1/3 mb-8 md:mb-0">
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">Manage Categories</h2>
-            {categories && <CategoryForm addCategory={addCategory} addSubcategory={addSubcategory} categories={categories} />}
+            {categories && <CategoryForm addCategory={addNewCategory} addSubcategory={addSubcategory} categories={categories} />}
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-4">Add Product</h2>

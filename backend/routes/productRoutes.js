@@ -1,10 +1,11 @@
 // productRoutes.js
 import express from 'express';
-import { getProductImage, viewProducts } from '../controllers/productController.js';
+import { viewProductsWithImages } from '../controllers/productController.js';
 
 const router = express.Router();
 
-router.get('/api/products', viewProducts);
-router.get('/api/products/:productId/image', getProductImage);
+
+// Actualiza la ruta
+router.get('/api/products-with-images', viewProductsWithImages);
 
 export default router;

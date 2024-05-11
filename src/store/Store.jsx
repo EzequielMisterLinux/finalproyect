@@ -8,6 +8,7 @@ import { Link, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faStore, faBars } from '@fortawesome/free-solid-svg-icons';
 
+
 const MobileMenu = styled.nav`
   display: none;
   @media (max-width: 768px) {
@@ -60,25 +61,33 @@ const Store = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/api/products')
+      .get('http://localhost:3001/api/products-with-images')
       .then((response) => {
         setProducts(response.data);
         setLoading(false);
       })
-      .catch((error) => console.error('Error fetching products:', error));
+      .catch((error) => console.error('Error fetching products with images:', error));
   }, []);
 
   useEffect(() => {
     let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+  
     if (selectedCategory) {
       filtered = filtered.filter((product) => product.category === selectedCategory);
+      console.log(selectedCategory);
     }
-
+  
+    if (selectedSubcategory) {
+      filtered = filtered.filter((product) => product.subcategory === selectedSubcategory);
+      console.log(selectedSubcategory);
+    }
+  
     setFilteredProducts(filtered);
-  }, [searchTerm, products, selectedCategory]);
+  }, [searchTerm, products, selectedCategory, selectedSubcategory]);
+  
+  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -116,7 +125,9 @@ const Store = () => {
               <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 
               <img
-                src={`http://localhost:3001/uploads/image-1713937358265.jpg`}
+              
+                src={`http://localhost:3001/api/products/${product.id}/image`}
+                
                 alt={product.name}
                 className="w-full h-48 object-cover"
               />

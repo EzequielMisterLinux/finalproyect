@@ -1,3 +1,4 @@
+// SearchFilter.js
 import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { fetchCategories, fetchSubcategories } from '../vendor/hooks/api';
@@ -27,6 +28,7 @@ const SearchFilter = ({ searchTerm, handleSearchChange, handleCategorySelect, ha
         if (selectedCategory) {
           const subcategoriesData = await fetchSubcategories(selectedCategory);
           setSubcategories(subcategoriesData);
+          setSelectedSubCategory(''); // Limpiar la subcategoría seleccionada cuando cambia la categoría
         } else {
           setSubcategories([]);
         }
@@ -38,15 +40,15 @@ const SearchFilter = ({ searchTerm, handleSearchChange, handleCategorySelect, ha
     fetchSubcategoriesData();
   }, [selectedCategory]);
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    handleCategorySelect(category);
-    setSelectedSubCategory('');
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    handleCategorySelect(categoryId);
+    // No es necesario limpiar la subcategoría seleccionada aquí
   };
 
-  const handleSubcategoryChange = (subcategory) => {
-    setSelectedSubCategory(subcategory);
-    handleSubcategorySelect(subcategory);
+  const handleSubcategoryChange = (subcategoryId) => {
+    setSelectedSubCategory(subcategoryId);
+    handleSubcategorySelect(subcategoryId);
   };
 
   const filterCategories = categories.filter(category =>
@@ -70,7 +72,7 @@ const SearchFilter = ({ searchTerm, handleSearchChange, handleCategorySelect, ha
           placeholder="Buscar productos"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="w-full p-2 mb-4 rounded border border-gray-300 text-white text-sm"
+          className="w-full p-2 mb-4 rounded border border-gray-300 text-black text-sm"
         />
         {filterCategories.map(category => (
           <div key={category.id} className="mb-4">
@@ -79,11 +81,15 @@ const SearchFilter = ({ searchTerm, handleSearchChange, handleCategorySelect, ha
             </div>
             {selectedCategory === category.id && (
               <>
-                {filterSubcategories.map(subcategory => (
-                  <div key={subcategory.id} className="cursor-pointer pl-4 text-white" onClick={() => handleSubcategoryChange(subcategory.id)}>
-                    {subcategory.name}
-                  </div>
-                ))}
+                {filterSubcategories.length === 0 ? (
+                  <div className="text-white pl-4">No hay subcategorías</div>
+                ) : (
+                  filterSubcategories.map(subcategory => (
+                    <div key={subcategory.id} className="cursor-pointer pl-4 text-white" onClick={() => handleSubcategoryChange(subcategory.id)}>
+                      {subcategory.name}
+                    </div>
+                  ))
+                )}
               </>
             )}
           </div>
